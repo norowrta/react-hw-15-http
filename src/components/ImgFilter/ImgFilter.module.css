@@ -1,5 +1,9 @@
+.section {
+}
+
 .container {
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .searchBar {
@@ -60,22 +64,11 @@
   opacity: 0.5;
 }
 
-.container {
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
 .content {
-  /* display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
- */
-
   display: grid;
-  /* Автоматичне створення колонок: мінімум 250px, максимум - скільки влізе */
+
   grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  grid-gap: 20px; /* Відстань між картинками */
+  grid-gap: 20px;
   padding: 20px;
 }
 
@@ -96,4 +89,81 @@
 .image:hover {
   transform: scale(1.02);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+
+.modalContent {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+}
+
+.handleImg {
+  max-width: 100%;
+  max-height: 90vh;
+  min-height: 50vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  user-select: none;
+
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.loaded {
+  opacity: 1;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.loadMoreBtn {
+  min-width: 160px;
+  padding: 12px 24px;
+  background-color: #3f51b5;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+
+  box-shadow:
+    0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+
+  transition:
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loadMoreBtn:hover,
+.loadMoreBtn:focus {
+  background-color: #303f9f;
+  box-shadow:
+    0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
