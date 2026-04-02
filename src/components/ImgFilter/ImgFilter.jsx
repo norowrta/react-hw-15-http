@@ -1,5 +1,5 @@
 import css from "./ImgFilter.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 
 const apiKey = import.meta.env.VITE_API_KEY;
@@ -22,6 +22,8 @@ export default function ImgFilter() {
       return;
     }
 
+    let ignore = false;
+
     const fetchImages = async () => {
       try {
         const respons = await axios.get("https://pixabay.com/api/", {
@@ -33,17 +35,27 @@ export default function ImgFilter() {
           },
         });
 
+        if (ignore) {
+          return;
+        }
+
         if (page === 1) {
           setImages(respons.data.hits);
         } else {
           setImages((prevImages) => [...prevImages, ...respons.data.hits]);
         }
       } catch (error) {
-        console.log(error);
+        if (!ignore) {
+          console.log(error);
+        }
       }
     };
 
     fetchImages();
+
+    return () => {
+      ignore = true;
+    };
   }, [query, page]);
 
   useEffect(() => {
@@ -63,6 +75,7 @@ export default function ImgFilter() {
   function handleSubmit() {
     setQuery(searchQuery);
     setPage(1);
+    setImages([]);
   }
 
   function handleModal(event) {
@@ -91,6 +104,19 @@ export default function ImgFilter() {
     setLoaded(false);
   }
 
+  const memoizedImages = useMemo(() => {
+    return images.map((image) => {
+      return (
+        <img
+          key={image.id}
+          src={image.webformatURL}
+          alt={image.tags}
+          className={css.image}
+        />
+      );
+    });
+  }, [images]);
+
   return (
     <section onKeyDown={handleKeyDown} className={css.section}>
       <div className={css.searchBar}>
@@ -107,16 +133,7 @@ export default function ImgFilter() {
       </div>
       <div className={css.container}>
         <div className={css.content} onClick={handleModal}>
-          {images.map((image) => {
-            return (
-              <img
-                key={image.id}
-                src={image.webformatURL}
-                alt={image.tags}
-                className={css.image}
-              />
-            );
-          })}
+          {memoizedImages}
         </div>
 
         {images.length > 0 && (
